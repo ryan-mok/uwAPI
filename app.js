@@ -80,8 +80,11 @@ expressApp.post('/webhook', function (request, response) {
 		};
 		client.get(url, args, (data, postResponse) => {
 			if (postResponse.statusCode == 200) {
-				const firstName = data.data.classes[0].instructors[0].split(',')[1];
-				const lastName = data.data.classes[0].instructors[0].split(',')[0];
+				console.log(data.data)
+				// const firstName = data.data.classes[0].instructors[0].split(',')[1];
+				// const lastName = data.data.classes[0].instructors[0].split(',')[0];
+				const firstName = 'test';
+				const lastName = 'test'
 				app.tell('The instructor for ' + subject + ' ' + number + ' is ' + firstName + ' ' + lastName + '.');
 			}
 			else {
