@@ -60,7 +60,7 @@ expressApp.post('/webhook', function (request, response) {
 		};
 		client.get(url, args, (data, postResponse) => {
 			if (postResponse.statusCode == 200) {
-				app.tell(subject + ' ' + number + ' is about: ' + data.data.description);
+				app.tell(subject + ' ' + number + ' is about: ' + data.data.description.split('[')[0]);
 			}
 			else {
 				app.tell('Oops. There was an error.');
