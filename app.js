@@ -20,6 +20,7 @@ const KEY = process.env.KEY;
 // List of actions
 const CLASS_NAME = 'class_name';
 const CLASS_DESCRIPTION = 'class_description';
+const CLASS_PROF = 'class_prof';
 
 // List of entities
 const SUBJECT_ARGUMENT = 'subject';
@@ -68,9 +69,31 @@ expressApp.post('/webhook', function (request, response) {
 		});
 	}
 
+	function classProf (app) {
+		let subject = app.getArgument(SUBJECT_ARGUMENT);
+		let number = app.getArgument(NUMBER_ARGUMENT);
+
+		const url = `https://api.uwaterloo.ca/v2/courses/${subject}/${number}/schedule.json?key=${KEY}`;
+		const args = {
+			headers: {},
+			data: {},
+		};
+		client.get(url, args, (data, postResponse) => {
+			if (postResponse.statusCode == 200) {
+				const firstName = data.data.classes.instructors[0].split(',')[1];
+				const lastName = data.data.classes.instructors[0].split(',')[0];
+				app.tell('The instructor for ' + subject + ' ' + number + ' is ' + firstName + ' ' + lastName + '.');
+			}
+			else {
+				app.tell('Oops. There was an error.');
+			}
+		});
+	}
+
 	let actionMap = new Map();
 	actionMap.set(CLASS_NAME, className);
 	actionMap.set(CLASS_DESCRIPTION, classDescription);
+	actionMap.set(CLASS_PROF, classProf);
 	app.handleRequest(actionMap);
 })
 
