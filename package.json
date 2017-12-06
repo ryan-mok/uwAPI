@@ -1,0 +1,19 @@
+{
+  "name": "uw-api",
+  "description": "Uses UW API",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "",
+  "engines": {
+    "node": "6.11.2"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "actions-on-google": "^1.0.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "node-rest-client": "^3.1.0"
+  }
+}
