@@ -21,10 +21,12 @@ const KEY = process.env.KEY;
 const CLASS_NAME = 'class_name';
 const CLASS_DESCRIPTION = 'class_description';
 const CLASS_PROF = 'class_prof';
+const BUILDING_NAME = 'building_name';
 
 // List of entities
 const SUBJECT_ARGUMENT = 'subject';
 const NUMBER_ARGUMENT = 'number';
+const BUILDING_ARGUMENT = 'building';
 
 
 // Express function
@@ -95,10 +97,29 @@ expressApp.post('/webhook', function (request, response) {
 		});
 	}
 
+	function buildingName (app) {
+		let building = app.getArgument(BUILDING_ARGUMENT);
+
+		const url = `https://api.uwaterloo.ca/v2/buildings/${building}.json?key=${KEY}`;
+		const args = {
+			headers: {},
+			data: {},
+		};
+		client.get(url, args, (data, postResponse) => {
+			if (postResponse.statusCode == 200) {
+				app.tell(building + ' stands for ' + data.data.building_name + '.');
+			}
+			else {
+				app.tell('Oops. There was an error.');
+			}
+		});
+	}
+
 	let actionMap = new Map();
 	actionMap.set(CLASS_NAME, className);
 	actionMap.set(CLASS_DESCRIPTION, classDescription);
 	actionMap.set(CLASS_PROF, classProf);
+	actionMap.set(BUILDING_NAME, buildingName);
 	app.handleRequest(actionMap);
 })
 
