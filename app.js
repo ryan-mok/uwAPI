@@ -8,10 +8,6 @@ const client = new Client();
 
 const KEY = process.env.KEY;
 
-const CLASS_NAME = 'class_name';
-const SUBJECT_ARGUMENT = 'subject';
-const NUMBER_ARGUMENT = 'number';
-
 const express = require('express')
 const bodyParser = require('body-parser')
 const expressApp = express()
@@ -22,6 +18,10 @@ expressApp.post('/webhook', function (request, response) {
 	const app = new App({request, response});
 
 	function className (app) {
+		const CLASS_NAME = 'class_name';
+		const SUBJECT_ARGUMENT = 'subject';
+		const NUMBER_ARGUMENT = 'number';
+
 		let subject = app.getArgument(SUBJECT_ARGUMENT);
 		let number = app.getArgument(NUMBER_ARGUMENT);
 
@@ -33,7 +33,31 @@ expressApp.post('/webhook', function (request, response) {
 		client.get(url, args, (data, postResponse) => {
 			console.log(postResponse)
 			if (postResponse.statusCode == 200) {
-				app.tell('The course title for ' + subject + ' ' + number + ' is ' + data.data.title + '.');
+				app.tell(subject + ' ' + number + ' is ' + data.data.title + '.');
+			}
+			else {
+				app.tell('Oops. There was an error.');
+			}
+		});
+	}
+
+	function classDescription (app) {
+		const CLASS_DESCRIPTION = 'class_description';
+		const SUBJECT_ARGUMENT = 'subject';
+		const NUMBER_ARGUMENT = 'number';
+
+		let subject = app.getArgument(SUBJECT_ARGUMENT);
+		let number = app.getArgument(NUMBER_ARGUMENT);
+
+		const url = `https://api.uwaterloo.ca/v2/courses/${subject}/${number}.json?key=${KEY}`;
+		const args = {
+			headers: {},
+			data: {},
+		};
+		client.get(url, args, (data, postResponse) => {
+			console.log(postResponse)
+			if (postResponse.statusCode == 200) {
+				app.tell(subject + ' ' + number + ' is about: ' + data.data.description);
 			}
 			else {
 				app.tell('Oops. There was an error.');
@@ -43,6 +67,7 @@ expressApp.post('/webhook', function (request, response) {
 
 	let actionMap = new Map();
 	actionMap.set(CLASS_NAME, className);
+	actionMap.set(CLASS_DESCRIPTION, classDescription);
 	app.handleRequest(actionMap);
 })
 
