@@ -44,7 +44,7 @@ expressApp.post('/webhook', function (request, response) {
 		};
 		client.get(url, args, (data, postResponse) => {
 			if (postResponse.statusCode == 200) {
-				app.tell(subject + ' ' + number + ' is ' + data.data.title + '.');
+				app.ask(subject + ' ' + number + ' is ' + data.data.title + '.');
 			}
 			else {
 				app.tell('Oops. There was an error.');
@@ -63,7 +63,7 @@ expressApp.post('/webhook', function (request, response) {
 		};
 		client.get(url, args, (data, postResponse) => {
 			if (postResponse.statusCode == 200) {
-				app.tell('Here\'s a brief description I found about ' + subject + ' ' + number + ': ' + data.data.description.split('[')[0]);
+				app.ask('Here\'s a brief description I found about ' + subject + ' ' + number + ': ' + data.data.description.split('[')[0]);
 			}
 			else {
 				app.tell('Oops. There was an error.');
@@ -85,10 +85,10 @@ expressApp.post('/webhook', function (request, response) {
 				if (data.data && data.data[0] && data.data[0].classes && data.data[0].classes[0] && data.data[0].classes[0].instructors && data.data[0].classes[0].instructors[0]) {
 					const firstName = data.data[0].classes[0].instructors[0].split(',')[1];
 					const lastName = data.data[0].classes[0].instructors[0].split(',')[0];
-					app.tell('The instructor for ' + subject + ' ' + number + ' is ' + firstName + ' ' + lastName + '.');
+					app.ask('The instructor for ' + subject + ' ' + number + ' is ' + firstName + ' ' + lastName + '.');
 				}
 				else {
-					app.tell('Sorry, it seems like ' + subject + ' ' + number + ' isn\'t offered right now.');
+					app.ask('Sorry, it seems like ' + subject + ' ' + number + ' isn\'t offered right now.');
 				}
 			}
 			else {
@@ -107,7 +107,7 @@ expressApp.post('/webhook', function (request, response) {
 		};
 		client.get(url, args, (data, postResponse) => {
 			if (postResponse.statusCode == 200) {
-				app.tell(building + ' stands for ' + data.data.building_name + '.');
+				app.ask(building + ' stands for ' + data.data.building_name + '.');
 			}
 			else {
 				app.tell('Oops. There was an error.');
