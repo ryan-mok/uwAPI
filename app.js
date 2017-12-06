@@ -40,7 +40,6 @@ expressApp.post('/webhook', function (request, response) {
 			data: {},
 		};
 		client.get(url, args, (data, postResponse) => {
-			console.log(postResponse)
 			if (postResponse.statusCode == 200) {
 				app.tell(subject + ' ' + number + ' is ' + data.data.title + '.');
 			}
@@ -60,7 +59,6 @@ expressApp.post('/webhook', function (request, response) {
 			data: {},
 		};
 		client.get(url, args, (data, postResponse) => {
-			console.log(postResponse)
 			if (postResponse.statusCode == 200) {
 				app.tell(subject + ' ' + number + ' is about: ' + data.data.description);
 			}
