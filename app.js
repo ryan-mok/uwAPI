@@ -73,3 +73,7 @@ expressApp.post('/webhook', function (request, response) {
 	actionMap.set(CLASS_DESCRIPTION, classDescription);
 	app.handleRequest(actionMap);
 })
+
+expressApp.listen(expressApp.get('port'), function () {
+	console.log('Webhook started')
+}) 
