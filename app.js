@@ -80,7 +80,7 @@ expressApp.post('/webhook', function (request, response) {
 		};
 		client.get(url, args, (data, postResponse) => {
 			if (postResponse.statusCode == 200) {
-				console.log(data.data)
+				console.log(data.data.classes)
 				// const firstName = data.data.classes[0].instructors[0].split(',')[1];
 				// const lastName = data.data.classes[0].instructors[0].split(',')[0];
 				const firstName = 'test';
