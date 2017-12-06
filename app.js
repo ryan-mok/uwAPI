@@ -80,9 +80,14 @@ expressApp.post('/webhook', function (request, response) {
 		};
 		client.get(url, args, (data, postResponse) => {
 			if (postResponse.statusCode == 200) {
-				const firstName = data.data[0].classes[0].instructors[0].split(',')[1];
-				const lastName = data.data[0].classes[0].instructors[0].split(',')[0];
-				app.tell('The instructor for ' + subject + ' ' + number + ' is ' + firstName + ' ' + lastName + '.');
+				if (data.data && data.data[0] && data.data[0].classes && data.data[0].classes[0] && data.data[0].classes[0].instructors && data.data[0].classes[0].instructors[0]) {
+					const firstName = data.data[0].classes[0].instructors[0].split(',')[1];
+					const lastName = data.data[0].classes[0].instructors[0].split(',')[0];
+					app.tell('The instructor for ' + subject + ' ' + number + ' is ' + firstName + ' ' + lastName + '.');
+				}
+				else {
+					app.tell('Sorry, it seems like ' + subject + ' ' + number + ' isn\'t offered right now.');
+				}
 			}
 			else {
 				app.tell('Oops. There was an error.');
