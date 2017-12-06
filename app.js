@@ -17,14 +17,14 @@ expressApp.set('port', (process.env.PORT || 5000))
 // Get key from environment
 const KEY = process.env.KEY;
 
-// List of functions and arguments
+// List of actions
 const CLASS_NAME = 'class_name';
+const CLASS_DESCRIPTION = 'class_description';
+
+// List of entities
 const SUBJECT_ARGUMENT = 'subject';
 const NUMBER_ARGUMENT = 'number';
 
-const CLASS_DESCRIPTION = 'class_description';
-const SUBJECT_ARGUMENT = 'subject';
-const NUMBER_ARGUMENT = 'number';
 
 // Express function
 expressApp.post('/webhook', function (request, response) {
