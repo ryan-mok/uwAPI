@@ -134,7 +134,7 @@ expressApp.post('/webhook', function (request, response) {
 					app.ask('There are currently no food services locations open. What else would you like to know?');
 				}
 				else {
-					app.ask('The food services locations that are currently open include: ' + foodList + '. What else would you like to know?');
+					app.ask('The food services locations that are currently open include: ' + foodList.join(', ') + '. What else would you like to know?');
 				}
 			}
 			else {
