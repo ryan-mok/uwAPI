@@ -22,6 +22,7 @@ const CLASS_NAME = 'class_name';
 const CLASS_DESCRIPTION = 'class_description';
 const CLASS_PROF = 'class_prof';
 const BUILDING_NAME = 'building_name';
+const FOOD_OPEN = 'food_open';
 
 // List of entities
 const SUBJECT_ARGUMENT = 'subject';
@@ -115,11 +116,39 @@ expressApp.post('/webhook', function (request, response) {
 		});
 	}
 
+	function foodOpen (app) {
+		const url = `https://api.uwaterloo.ca/v2/foodservices/locations.json?key=${KEY}`;
+		const args = {
+			headers: {},
+			data: {},
+		};
+		client.get(url, args, (data, postResponse) => {
+			if (postResponse.statusCode == 200) {
+				var foodList = [];
+				for (var i = 0; i < data.data.length; i++) {
+					if (data.data[i].is_open_now) {
+						foodList.push(data.data[i].outlet_name);
+					}
+				}
+				if (foodList.length == 0) {
+					app.ask('There are currently no food services locations open. What else would you like to know?');
+				}
+				else {
+					app.ask('The food services locations that are currently open include: ' + foodList + '. What else would you like to know?');
+				}
+			}
+			else {
+				app.tell('Oops. There was an error.');
+			}
+		});
+	}
+
 	let actionMap = new Map();
 	actionMap.set(CLASS_NAME, className);
 	actionMap.set(CLASS_DESCRIPTION, classDescription);
 	actionMap.set(CLASS_PROF, classProf);
 	actionMap.set(BUILDING_NAME, buildingName);
+	actionMap.set(FOOD_OPEN, foodOpen);
 	app.handleRequest(actionMap);
 });
 
